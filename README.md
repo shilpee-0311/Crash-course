@@ -1,86 +1,151 @@
-🧩 Project Title: Crash Course Management System
+🧩 Crash Course Management System
+A scalable Spring Boot REST API for managing crash courses, built with clean architecture and real-world business logic.
 
-🎯 Objective:
-To build a backend REST API that manages short-term (crash) courses, where students can enroll, mentors can manage their assigned courses, and the system tracks enrollments, course capacities, and statuses in a structured, scalable way.
+🎯 Project Objective
+Build a backend platform that allows:
 
-⚙️ Tech Stack:
+📘 Mentors to create and manage short-term educational courses
 
-Language: Java
+🧑‍🎓 Students to register and enroll in those courses
 
-Framework: Spring Boot
+✅ The system to track course capacity, enrollment status, and handle validations
 
-Database: (Assumed: MySQL/PostgreSQL — can be mentioned if implemented)
+Inspired by platforms like Udemy and Coursera, this project simulates how education tech systems manage dynamic enrollments and mentor-student interactions.
 
-JPA: For ORM and database interactions
-
-DTOs & Mappers: For clean data flow
-
-Exception Handling: Custom (NotFoundException)
-
-Architecture: Layered (Controller → Service → Repository → Entity)
+⚙️ Tech Stack
+Layer	Tech
+🧠 Language	Java
+🔧 Backend Framework	Spring Boot
+💾 ORM	Spring Data JPA (Hibernate)
+🗃️ Database	MySQL / PostgreSQL (configurable)
+🧬 Architecture	Layered (Controller → Service → Repository → Entity)
+📦 Data Transfer	DTOs & Mappers
+🚨 Exception Handling	Custom (NotFoundException)
+🧪 Testing	(Optional) JUnit / Mockito (To be added)
 
 📚 Modules & Features
 1. 🧑‍🎓 Student Module
-Add, update, fetch, and delete students.
+Register, update, fetch, and delete students
 
-Validates student existence using StudentService.
+Clean data using StudentDto
 
-DTOs ensure clean request/response data.
+Auto-validation & 404 error handling via StudentService and NotFoundException
 
-Example:
-
-GET /students/{id} → fetches student by ID.
-
-Throws NotFoundException if student doesn’t exist.
-
+http
+Copy
+Edit
+GET /students/{id} → Fetch student by ID
 2. 👨‍🏫 Mentor Module
-Mentors can be added and linked to courses.
+Add mentors
 
-Each course has one assigned mentor.
+Each course is assigned one mentor
 
-Managed using MentorRepository.
+MentorRepository ensures only valid mentors are mapped
 
 3. 📘 Course Module
-Create and fetch course details.
+Create and retrieve course info
 
-Fields: name, description, duration, capacity, price, mentor, status (ACTIVE, COMPLETE, CANCELLED), start date, enrollment end date.
+Key fields:
 
-Ensures only existing mentors are linked using CourseMapper.
+name, description, capacity, price, mentor, status, startDate, enrollmentEndDate
+
+Controlled states with CourseStatus enum
+
+Linked to mentors using CourseMapper
 
 4. 📝 Enrollment Module
-Students can enroll in courses.
+Enroll students into courses
 
 Validations include:
 
-Enrollment date must be before course start date.
+🕐 Enrollment date < Course start date
 
-Course capacity must not be exceeded.
+❌ Capacity check before saving
 
-Status options: ACTIVE, COMPLETE, CANCELLED.
+Tracked with EnrollmentStatus enum (ACTIVE, COMPLETE, CANCELLED)
 
-🔄 Data Flow Example:
-A student sends a request to enroll in a course via EnrollmentController.
+Mapped using EnrollmentMapper
 
-The EnrollmentDto is passed to EnrollmentMapper.
+🔄 Sample Data Flow
+mermaid
+Copy
+Edit
+sequenceDiagram
+    actor Student
+    Student->>+EnrollmentController: Enroll in course (POST)
+    EnrollmentController->>EnrollmentMapper: Map DTO to Entity
+    EnrollmentMapper->>StudentRepository: Find Student
+    EnrollmentMapper->>CourseRepository: Find Course
+    EnrollmentMapper-->>Enrollment: Create Enrollment Object
+    EnrollmentController->>EnrollmentService: Validate & Save
+    EnrollmentService->>EnrollmentRepository: Save to DB
+    EnrollmentRepository-->>Student: Confirmation Response
+📊 Highlights & Unique Features
+✅ Controlled Status States
 
-The mapper fetches the student and course entities using repositories.
+CourseStatus & EnrollmentStatus enums for robust data modeling
 
-EnrollmentService checks for course capacity and date logic.
+✅ Exception Safety
 
-If valid, enrollment is saved via EnrollmentRepository.
+NotFoundException prevents crashing on missing data
 
-📊 Highlights & Unique Features:
-Used Enums for maintaining controlled state of CourseStatus and EnrollmentStatus.
+✅ DTO + Mapper Architecture
 
-Created custom exception (NotFoundException) to handle entity absence cleanly.
+Ensures clean separation of concerns and future flexibility
 
-Mappers separate logic between DTOs and entities, improving maintainability.
+✅ Business Logic Validation
 
-Repository methods like findByStudentAndStatus() enable powerful filtering.
+Course capacity check
 
-✅ Impact:
-Mimics real-world education platforms like Udemy or Coursera (backend).
+Date validations for enrollment
 
-Clean layered structure makes it scalable and production-ready.
+✅ Query Methods
 
-Can be easily extended with authentication (Spring Security) and frontend (React, Angular).
+findByStudentAndStatus() for filtered views
+
+countByCourse() for capacity management
+
+🛠️ Future Enhancements
+🔐 Spring Security Integration for authentication/authorization
+
+🌐 Swagger/OpenAPI for API documentation
+
+💻 Frontend in React or Angular
+
+📈 Analytics Dashboard for mentors/students
+
+🧪 Unit & Integration Testing with JUnit/Mockito
+
+🚀 Getting Started
+Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/your-username/crash-course-management.git
+cd crash-course-management
+Run the App
+Make sure you have Java & Maven installed.
+
+bash
+Copy
+Edit
+./mvnw spring-boot:run
+📁 Project Structure
+pgsql
+Copy
+Edit
+com.example.spring_boot
+├── controller
+├── service
+├── repository
+├── entities
+├── dto
+├── enums
+├── mapper
+└── exception
+
+👨‍💻 Author
+
+Shilpee Srivastava
+Passionate about backend development, clean code, and building scalable enterprise solutions.
+📫 LinkedIn | 🌐 Portfolio
