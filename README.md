@@ -1,8 +1,11 @@
 🧩 Crash Course Management System
+
 A scalable Spring Boot REST API for managing crash courses, built with clean architecture and real-world business logic.
 
 🎯 Project Objective
+
 Build a backend platform that allows:
+
 
 📘 Mentors to create and manage short-term educational courses
 
@@ -11,6 +14,7 @@ Build a backend platform that allows:
 ✅ The system to track course capacity, enrollment status, and handle validations
 
 Inspired by platforms like Udemy and Coursera, this project simulates how education tech systems manage dynamic enrollments and mentor-student interactions.
+
 
 ⚙️ Tech Stack
 Layer	Tech
@@ -148,4 +152,4 @@ com.example.spring_boot
 
 Shilpee Srivastava
 Passionate about backend development, clean code, and building scalable enterprise solutions.
-📫 LinkedIn | 🌐 Portfolio
+
