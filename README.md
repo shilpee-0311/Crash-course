@@ -1,75 +1,84 @@
-🔧 Project Overview: Crash Course Management System
+🧩 Project Title: Crash Course Management System
+🎯 Objective:
+To build a backend REST API that manages short-term (crash) courses, where students can enroll, mentors can manage their assigned courses, and the system tracks enrollments, course capacities, and statuses in a structured, scalable way.
 
-🎯 Purpose
-To manage online or offline crash courses where students can:
+⚙️ Tech Stack:
+Language: Java
 
-View available courses
+Framework: Spring Boot
 
-Enroll in a course
+Database: (Assumed: MySQL/PostgreSQL — can be mentioned if implemented)
 
-Track the course status
+JPA: For ORM and database interactions
 
-Admins (or instructors) can:
+DTOs & Mappers: For clean data flow
 
-Add new courses
+Exception Handling: Custom (NotFoundException)
 
-Update course information
+Architecture: Layered (Controller → Service → Repository → Entity)
 
-Track enrollments
+📚 Modules & Features
+1. 🧑‍🎓 Student Module
+Add, update, fetch, and delete students.
 
-📁 Main Components
-1. Course
-Represents a crash course offered.
+Validates student existence using StudentService.
 
-Fields: id, courseName, description, status, projectName (if added).
+DTOs ensure clean request/response data.
 
-Status is managed using an enum (CourseStatus) like ACTIVE, INACTIVE, etc.
+Example:
 
-2. Enrollment
-Represents a student enrolling in a course.
+GET /students/{id} → fetches student by ID.
 
-Contains references to course and student details.
+Throws NotFoundException if student doesn’t exist.
 
-Handles status of enrollment.
+2. 👨‍🏫 Mentor Module
+Mentors can be added and linked to courses.
 
-🔄 Architecture Layers
-✅ Entity Layer
-Course.java and Enrollment.java: Define the data models that are mapped to the database.
+Each course has one assigned mentor.
 
-✅ DTO (Data Transfer Objects)
-CourseDto.java, EnrollmentDto.java: Used to transfer data between layers while hiding internal details.
+Managed using MentorRepository.
 
-✅ Repository Layer
-CourseRepository.java: Interface for database operations on courses.
+3. 📘 Course Module
+Create and fetch course details.
 
-✅ Service Layer
-CourseService.java: Contains business logic for creating, updating, and managing courses.
+Fields: name, description, duration, capacity, price, mentor, status (ACTIVE, COMPLETE, CANCELLED), start date, enrollment end date.
 
-✅ Controller Layer
-CourseController.java, EnrollmentController.java: Handle HTTP requests (e.g., create course, enroll in course) and route them to the service layer.
+Ensures only existing mentors are linked using CourseMapper.
 
-✅ Mapper
-CourseMapper.java: Converts between Course entity and CourseDto.
+4. 📝 Enrollment Module
+Students can enroll in courses.
 
-🌟 Key Features
-Add new crash courses
+Validations include:
 
-Update course details (like status, description, or project name)
+Enrollment date must be before course start date.
 
-Enroll students in courses
+Course capacity must not be exceeded.
 
-List or filter courses by status
+Status options: ACTIVE, COMPLETE, CANCELLED.
 
-Map DTOs to entities and vice versa for cleaner architecture
+🔄 Data Flow Example:
+A student sends a request to enroll in a course via EnrollmentController.
 
-🛠 Technologies Likely Used
-Spring Boot: For backend REST API
+The EnrollmentDto is passed to EnrollmentMapper.
 
-Java: Language
+The mapper fetches the student and course entities using repositories.
 
-JPA/Hibernate: For ORM/database interaction
+EnrollmentService checks for course capacity and date logic.
 
-PostgreSQL/MySQL: Likely for data storage
+If valid, enrollment is saved via EnrollmentRepository.
 
-REST API: For handling requests (e.g., enroll, list courses)
+📊 Highlights & Unique Features:
+Used Enums for maintaining controlled state of CourseStatus and EnrollmentStatus.
 
+Created custom exception (NotFoundException) to handle entity absence cleanly.
+
+Mappers separate logic between DTOs and entities, improving maintainability.
+
+Repository methods like findByStudentAndStatus() enable powerful filtering.
+
+✅ Impact:
+Mimics real-world education platforms like Udemy or Coursera (backend).
+
+Clean layered structure makes it scalable and production-ready.
+
+Can be easily extended with authentication (Spring Security) and frontend (React, Angular).
